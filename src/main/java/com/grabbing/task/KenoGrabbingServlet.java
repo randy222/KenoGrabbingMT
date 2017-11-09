@@ -3,6 +3,7 @@ package com.grabbing.task;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,8 +99,8 @@ public class KenoGrabbingServlet extends HttpServlet {
 		}			
 		
 		try {
-//			PrintWriter writer = new PrintWriter("/usr/local/applications/lt-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
-			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");	
+			PrintWriter writer = new PrintWriter("/usr/local/applications/lt-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
+//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");	
 			writer.println("Version: 0");
 			String line = "";
 			for (int i = 0; i < size; i++) {
@@ -132,6 +133,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 				writer.println(line);
 				line = "";
 			}
+			writer.println("Last updated time: " + Calendar.getInstance().getTime().toString());
 			writer.close();	
 		} catch (Exception e) {
 			e.printStackTrace();			

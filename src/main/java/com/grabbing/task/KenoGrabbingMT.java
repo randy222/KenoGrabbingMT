@@ -2,6 +2,7 @@ package com.grabbing.task;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +77,7 @@ public class KenoGrabbingMT extends TimerTask{
 				writer.println(line);
 				line = "";
 			}
+			writer.println("Last updated time: " + Calendar.getInstance().getTime().toString());
 			writer.close();
 		} catch (Exception e) {
 			e.printStackTrace();			
