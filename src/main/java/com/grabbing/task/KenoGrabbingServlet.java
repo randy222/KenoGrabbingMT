@@ -99,7 +99,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 		}			
 		
 		try {
-			PrintWriter writer = new PrintWriter("/usr/local/applications/lt-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
 //			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");	
 			writer.println("Version: 0");
 			String line = "";

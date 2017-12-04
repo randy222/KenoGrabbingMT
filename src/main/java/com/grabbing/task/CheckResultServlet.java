@@ -17,10 +17,10 @@ public class CheckResultServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 //	private static final String ILOTTOFILENAME= "C:\\Users\\pohsun\\Desktop\\lotto-check-result.txt";
 //	private static final String KENOFILENAME = "C:\\Users\\pohsun\\Desktop\\keno-check-result.txt";
-	private static final String ILOTTO= "/usr/local/applications/lt-grabbing-server/lotto-check-result.txt";
-	private static final String KENO= "/usr/local/applications/lt-grabbing-server/keno-check-result.txt";
-	private static final String KENO_MT= "/usr/local/applications/lt-grabbing-server/Keno-Grabbing-MT.txt";
-	private static final String RESTART= "/usr/local/applications/lt-grabbing-server/RestartResult.txt";
+	private static final String ILOTTO= "/usr/local/applications/kn-grabbing-server/lotto-check-result.txt";
+	private static final String KENO= "/usr/local/applications/kn-grabbing-server/keno-check-result.txt";
+	private static final String KENO_MT= "/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt";
+	private static final String RESTART= "/usr/local/applications/kn-grabbing-server/RestartResult.txt";
 	
 	public CheckResultServlet() {
 

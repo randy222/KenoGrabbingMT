@@ -24,19 +24,19 @@
 		<input type="submit" value="Show Keno MT">
 	</form>
 	</br>	
-	<form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
+	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
 		<input type="hidden" name="type" value="iLotto" >
 		<input type="submit" value="Check iLotto">
 	</form>
-	</br>
+	</br> -->
 	<form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
 		<input type="hidden" name="type" value="keno" >
 		<input type="submit" value="Check Keno">
 	</form>
 	</br>
-	<form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
+	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
 		<input type="hidden" name="type" value="restart" >
 		<input type="submit" value="Show Restart Result">
-	</form>
+	</form> -->
 </body>
 </html>
