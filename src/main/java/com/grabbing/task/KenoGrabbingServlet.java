@@ -2,6 +2,7 @@ package com.grabbing.task;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -61,11 +62,12 @@ public class KenoGrabbingServlet extends HttpServlet {
 		if (idx >= 0) {
 			response.getWriter().append("Authorize result: Failed").println();
 			logger.info("Authorize result: failed");
+			writeErrMsg("5");
 		} else {
 			response.getWriter().append("Authorize result: Success").println();
 			logger.info("Authorize result: Success");
 
-			parseRawData(doc, response);
+			parseRawData(doc, response, "0");
 			
 			logger.info("Timer Start");
 			if (timer != null) {
@@ -80,7 +82,22 @@ public class KenoGrabbingServlet extends HttpServlet {
 		}
 	}
 
-	private void parseRawData(Document doc, HttpServletResponse response) {
+	private void writeErrMsg(String msgCode) {
+		try {
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
+//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			writer.println("Message_Code: " + msgCode);
+			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
+			writer.close();	
+		} catch (Exception e) {
+			e.printStackTrace();			
+			logger.error("Error in writing MT error message. Error message: " + e.getMessage());		
+		} 
+		
+	}
+
+	private void parseRawData(Document doc, HttpServletResponse response, String msgCode) {
 		Elements drawNos = doc.select(".restext");
 		Elements numbers = doc.getElementsByAttributeValue("style", "color:#002160");
 
@@ -100,11 +117,14 @@ public class KenoGrabbingServlet extends HttpServlet {
 		
 		try {
 			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
-//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");	
+//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+			writer.println("Message_Code: " + msgCode);
+			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
 			writer.println("Version: 0");
 			String line = "";
 			for (int i = 0; i < size; i++) {
-				line += drawNoList.get(i) + "-[";
+				line += drawNoList.get(i) + "@[";
 				line += drawResultList.get(0) + ",";
 				line += drawResultList.get(1) + ",";
 				line += drawResultList.get(2) + ",";
@@ -133,7 +153,6 @@ public class KenoGrabbingServlet extends HttpServlet {
 				writer.println(line);
 				line = "";
 			}
-			writer.println("Last updated time: " + Calendar.getInstance().getTime().toString());
 			writer.close();	
 		} catch (Exception e) {
 			e.printStackTrace();			
@@ -183,6 +202,8 @@ public class KenoGrabbingServlet extends HttpServlet {
 		} catch (Exception e) {
 			// grap(cookies);
 			e.printStackTrace();
+			writeErrMsg("1");
+			doc = null;
 		}
 
 		return doc;
