@@ -44,7 +44,6 @@ a {
 		<LI><a href="http://lobby.ilotto.qqcpplay.com/html5"
 			target="_blank">iLotto Live</a></LI>
 	</UL>
-	<br />
 	<hr />
 	<H2>QQLK Other Platform</H2>
 	<UL>
@@ -55,7 +54,6 @@ a {
 		<LI><a href="http://grabberMT.qqcp518.com" target="_blank">MT
 				Grabber Live</a></LI>
 	</UL>
-	<br />
 	<hr />
 	<H2>Backoffice</H2>
 	<UL>
@@ -72,7 +70,6 @@ a {
 		<LI><a href="http://backoffice.ilotto.qqcp518.com/"
 			target="_blank">LT Live</a></LI>
 	</UL>
-	<br />
 	<hr />
 	<H2>Merchant Bo</H2>
 	<UL>
@@ -89,7 +86,6 @@ a {
 		<LI><a href="http://merchant.ilotto.qqcpplay.com/"
 			target="_blank">LT Live</a></LI>
 	</UL>
-	<br />
 	<hr />
 	<H2>Mobile</H2>
 	<UL>
@@ -99,6 +95,37 @@ a {
 			target="_blank">ilotto Staging</a></LI>
 		<LI><a href="http://lobby.ilotto.qqcpplay.com/mobile/"
 			target="_blank">ilotto Live</a></LI>
+	</UL>
+	<hr />
+	<H2>SG LiveBo</H2>
+	<UL>
+		<LI><a href="http://admin.hugedolphin.com" target="_blank">SG
+				Admin Web</a></LI>
+		<LI><a href="http://backoffice.hugedolphin.com/" target="_blank">SG
+				Backoffice Web </a></LI>
+		<LI><a href="http://bo.ssadmin.club/" target="_blank">SS Bo</a></LI>
+		<LI><a href="http://bo.skyadmin.club/" target="_blank">Sky Bo</a></LI>
+
+		<LI><a href="http://admin.sgpagcor.com" target="_blank">PGR
+				Admin Web</a></LI>
+		<LI><a href="http://backoffice.sgpagcor.com/" target="_blank">PGR
+				Bo</a></LI>
+		<LI><a href="http://admin.goldphoenix88.com/" target="_blank">GPK
+				Admin Web</a></LI>
+		<LI><a href="http://backoffice.goldphoenix88.com/"
+			target="_blank">GPK Bo</a></LI>
+	</UL>
+	<UL>
+		<LI><a href="http://admin.imspade.com/" target="_blank">IM
+				Admin Web</a></LI>
+		<LI><a href="http://backoffice.imspade.com/" target="_blank">IM
+				Bo</a></LI>
+		<LI><a href="http://admin.azuredragon88.com/" target="_blank">BBIN
+				Admin Web</a></LI>
+		<LI><a href="http://backoffice.azuredragon88.com/"
+			target="_blank">BBIN Bo</a></LI>
+		<LI><a href="http://admin.sgplayfun.com/" target="_blank">PFF
+				Bo</a></LI>
 	</UL>
 </body>
 </html>
