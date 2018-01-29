@@ -15,28 +15,38 @@
 		target="_blank">QuickKeno MT</a>
 	</br>
 	<form method="GET" action="<c:url value="/KenoGrap" />" target="_blank">
-		<input type="text" name="phpid" value="" size="30">
-		<input type="submit" value="START">
+		<input type="text" name="phpid" value="" size="30"> <input
+			type="submit" value="START">
 	</form>
-	</br>	
-	<form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
-		<input type="hidden" name="type" value="MT" >
-		<input type="submit" value="Show Keno MT">
+	</br>
+	<form method="GET" action="<c:url value="/CheckResult" />"
+		target="_blank">
+		<input type="hidden" name="type" value="MT"> <input
+			type="submit" value="Show Keno MT">
 	</form>
-	</br>	
+	</br>
 	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
 		<input type="hidden" name="type" value="iLotto" >
 		<input type="submit" value="Check iLotto">
 	</form>
 	</br> -->
-	<form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
-		<input type="hidden" name="type" value="keno" >
-		<input type="submit" value="Check Keno">
+	<form method="GET" action="<c:url value="/CheckResult" />"
+		target="_blank">
+		<input type="hidden" name="type" value="keno"> <input
+			type="submit" value="Check Keno">
 	</form>
 	</br>
 	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
 		<input type="hidden" name="type" value="restart" >
 		<input type="submit" value="Show Restart Result">
 	</form> -->
+	<a> 市場列表： </a>
+	<a href="<%=request.getContextPath()%>/market" target="_blank">Market
+		List WebSite</a>
+	<br />
+	<br />
+	<a> LKDEMO： </a>
+	<a href="<%=request.getContextPath()%>/demo" target="_blank">QQLK
+		Demo WebSite</a>
 </body>
 </html>
