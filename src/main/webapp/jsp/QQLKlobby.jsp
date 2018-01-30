@@ -43,6 +43,8 @@ a {
 				Live</a></LI>
 		<LI><a href="http://lobby.ilotto.qqcpplay.com/html5"
 			target="_blank">iLotto Live</a></LI>
+		<LI><a href="http://lobby-ptm-dev.sgplay.biz/list.html"
+			target="_blank">SG PTM</a></LI>
 	</UL>
 	<hr />
 	<H2>QQLK Other Platform</H2>
@@ -69,6 +71,8 @@ a {
 				Live</a></LI>
 		<LI><a href="http://backoffice.ilotto.qqcp518.com/"
 			target="_blank">LT Live</a></LI>
+		<LI><a href="http://bo-ptm-dev.sgplay.biz/" target="_blank">SG
+				PTM Bo</a></LI>
 	</UL>
 	<hr />
 	<H2>Merchant Bo</H2>
