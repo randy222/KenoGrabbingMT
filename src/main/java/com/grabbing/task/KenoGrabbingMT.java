@@ -4,9 +4,11 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TimerTask;
 
 import org.jsoup.Jsoup;
@@ -121,15 +123,26 @@ public class KenoGrabbingMT extends TimerTask{
 	}
 
 	public Document grap(Map<String, String> cookies) {
+		String url = "https://www.maltco.com/keno/QuickKeno_Today_Results.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
 			DisableSslVerification.disable();
-			doc = Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
-					.timeout(10000).get();
+			Date date = new Date();
+	    	SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    	TimeZone cetTime = TimeZone.getTimeZone("CET");
+	    	cetFormat.setTimeZone(cetTime);
+			String now = cetFormat.format(date);
+			String[] nowArray = now.split("-");
+			url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
+//			doc = Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
+//					.timeout(1000).get();
+			doc = Jsoup.connect(url).cookies(cookies)
+					.timeout(1000).get();
 		} catch (Exception e) {
 			// grap(cookies);
 			e.printStackTrace();
 			writeErrMsg("1");
+			doc = null;
 		}
 
 		return doc;
