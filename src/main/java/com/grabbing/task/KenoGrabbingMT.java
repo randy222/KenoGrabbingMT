@@ -127,13 +127,23 @@ public class KenoGrabbingMT extends TimerTask{
 		Document doc = null;
 		try {
 			DisableSslVerification.disable();
-			Date date = new Date();
-	    	SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar cal = Calendar.getInstance();
+			Date today = cal.getTime();
+			cal.add(Calendar.DAY_OF_MONTH, -1);
+	    	Date yesterday = cal.getTime();
+	    	SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 	    	TimeZone cetTime = TimeZone.getTimeZone("CET");
 	    	cetFormat.setTimeZone(cetTime);
-			String now = cetFormat.format(date);
+			String now = cetFormat.format(today);
+			String before = cetFormat.format(yesterday);
 			String[] nowArray = now.split("-");
-			url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
+			String[] beforeArray = before.split("-");
+			int hour = Integer.parseInt(nowArray[3]);
+			if (hour < 5) {
+				url = url.replace("yyyy", beforeArray[0]).replace("MM", beforeArray[1]).replace("dd", beforeArray[2]);
+			} else {
+				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
+			}
 //			doc = Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
 //					.timeout(1000).get();
 			doc = Jsoup.connect(url).cookies(cookies)
