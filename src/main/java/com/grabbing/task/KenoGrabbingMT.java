@@ -123,7 +123,7 @@ public class KenoGrabbingMT extends TimerTask{
 	}
 
 	public Document grap(Map<String, String> cookies) {
-		String url = "https://www.maltco.com/keno/QuickKeno_Today_Results.php?day=dd&month=MM&year=yyyy";
+		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
 			DisableSslVerification.disable();
