@@ -94,7 +94,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
 			writer.close();
 		} catch (Exception e) {
-			logger.error("Error in writing MT error message. Error message: " + e.getMessage());
+			logger.error("Error in writing MT error message. Error message: ", e);
 		}
 
 	}
@@ -159,8 +159,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 			writer.close();
 			logger.info("End writing file");
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Error in drawing MT data. Error message: " + e.getMessage());
+			logger.error("Error in drawing MT data. Error message: ", e);
 		}
 	}
 
@@ -227,7 +226,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 			logger.info("Total Grabbing　 time  = {}", (end - start) / 1000 + " secs");
 		} catch (Exception e) {
 			end = System.currentTimeMillis();
-			logger.error("Exception = {}", e.getMessage());
+			logger.error("Exception: ", e);
 			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;

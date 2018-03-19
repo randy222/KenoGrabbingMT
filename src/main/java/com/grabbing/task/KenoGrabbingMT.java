@@ -94,7 +94,7 @@ public class KenoGrabbingMT extends TimerTask{
 				writer.close();
 				logger.info("End writing file");
 			} catch (Exception e) {	
-				logger.error("Error in drawing MT data. Error message: " + e.getMessage());		
+				logger.error("Error in drawing MT data. Error message: ", e);		
 			} 
 			count++;	
 		}
@@ -153,7 +153,7 @@ public class KenoGrabbingMT extends TimerTask{
 			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 		} catch (Exception e) {
 			end = System.currentTimeMillis();
-			logger.error("Exception = {}", e.getMessage());
+			logger.error("Exception: ", e);
 			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;
@@ -179,7 +179,7 @@ public class KenoGrabbingMT extends TimerTask{
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
 			writer.close();	
 		} catch (Exception e) {		
-			logger.error("Error in writing MT error message. Error message: " + e.getMessage());		
+			logger.error("Error in writing MT error message. Error message: ", e);		
 		} 
 		
 	}
