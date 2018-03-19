@@ -2,6 +2,7 @@ package com.grabbing.task;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,14 +17,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.util.ssl.DisableSslVerification;
 
 /**
  * Servlet implementation class KenoGrapServlet
@@ -33,15 +33,17 @@ public class KenoGrabbingServlet extends HttpServlet {
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingServlet.class);
 	private static Timer timer = null;
 	private static KenoGrabbingMT task = null;
+	long start;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public KenoGrabbingServlet() {
-
-		super();
-
-		// TODO Auto-generated constructor stub
+		start = System.currentTimeMillis();
+		logger.info("KenoGrabbingServlet Start = {}", System.currentTimeMillis());
+		Security.addProvider(new BouncyCastleProvider());
+		logger.info("Finish Security.addProvider(new BouncyCastleProvider()) = {}", System.currentTimeMillis());
+		logger.info("TOTAL START TIME = {} ", (System.currentTimeMillis() - start) / 1000);
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 			logger.info("Authorize result: Success");
 
 			parseRawData(doc, response, "0");
-			
+
 			logger.info("Timer Start");
 			if (timer != null) {
 				timer.cancel();
@@ -86,17 +88,20 @@ public class KenoGrabbingServlet extends HttpServlet {
 
 	private void writeErrMsg(String msgCode) {
 		try {
-			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
-//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt",
+					"UTF-8");
+			// PrintWriter writer = new
+			// PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt",
+			// "UTF-8");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			writer.println("Message_Code: " + msgCode);
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
-			writer.close();	
+			writer.close();
 		} catch (Exception e) {
-			e.printStackTrace();			
-			logger.error("Error in writing MT error message. Error message: " + e.getMessage());		
-		} 
-		
+			e.printStackTrace();
+			logger.error("Error in writing MT error message. Error message: " + e.getMessage());
+		}
+
 	}
 
 	private void parseRawData(Document doc, HttpServletResponse response, String msgCode) {
@@ -115,11 +120,14 @@ public class KenoGrabbingServlet extends HttpServlet {
 		}
 		for (Element number : numbers) {
 			drawResultList.add(number.text());
-		}			
-		
+		}
+
 		try {
-			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
-//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt",
+					"UTF-8");
+			// PrintWriter writer = new
+			// PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt",
+			// "UTF-8");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			writer.println("Message_Code: " + msgCode);
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
@@ -149,41 +157,41 @@ public class KenoGrabbingServlet extends HttpServlet {
 				line += drawResultList.get(19) + "]";
 				if (drawResultList.size() >= 20) {
 					removeData(drawResultList);
-				}	
+				}
 				response.getWriter().append(line).println();
 				logger.info(line);
 				writer.println(line);
 				line = "";
 			}
-			writer.close();	
+			writer.close();
 		} catch (Exception e) {
-			e.printStackTrace();			
-			logger.error("Error in drawing MT data. Error message: " + e.getMessage());		
-		} 	
-	}
-		
-		private void removeData(List<String> drawResultList) {
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
-			drawResultList.remove(0);
-			drawResultList.remove(0);	
+			e.printStackTrace();
+			logger.error("Error in drawing MT data. Error message: " + e.getMessage());
 		}
+	}
+
+	private void removeData(List<String> drawResultList) {
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+		drawResultList.remove(0);
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -199,14 +207,14 @@ public class KenoGrabbingServlet extends HttpServlet {
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
-			DisableSslVerification.disable();
+			// DisableSslVerification.disable();
 			Calendar cal = Calendar.getInstance();
 			Date today = cal.getTime();
 			cal.add(Calendar.DAY_OF_MONTH, -1);
-	    	Date yesterday = cal.getTime();
-	    	SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-	    	TimeZone cetTime = TimeZone.getTimeZone("CET");
-	    	cetFormat.setTimeZone(cetTime);
+			Date yesterday = cal.getTime();
+			SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			TimeZone cetTime = TimeZone.getTimeZone("CET");
+			cetFormat.setTimeZone(cetTime);
 			String now = cetFormat.format(today);
 			String before = cetFormat.format(yesterday);
 			String[] nowArray = now.split("-");
@@ -217,13 +225,20 @@ public class KenoGrabbingServlet extends HttpServlet {
 			} else {
 				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
 			}
-//			doc = Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
-//					.timeout(1000).get();
-			doc = Jsoup.connect(url).cookies(cookies)
-					.timeout(1000).get();
+			// doc =
+			// Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
+			// .timeout(1000).get();
+			start = System.currentTimeMillis();
+			logger.info("Start Grabbing time = {}", System.currentTimeMillis());
+			doc = Jsoup.connect(url).cookies(cookies).timeout(1000).get();
+			long end = System.currentTimeMillis();
+			logger.info("Stop Grabbing time = {}", System.currentTimeMillis());
+			logger.info("TOTAL　 time  = {}", (end - start) / 1000);
 		} catch (Exception e) {
 			// grap(cookies);
 			e.printStackTrace();
+			logger.info("Exception  = {} Stop time ={}", new Object[] { e.getMessage(), System.currentTimeMillis() });
+			logger.info("TOTAL　 time  = {}", (System.currentTimeMillis() - start) / 1000);
 			writeErrMsg("1");
 			doc = null;
 		}

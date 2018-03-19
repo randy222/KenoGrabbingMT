@@ -18,7 +18,6 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.util.ssl.DisableSslVerification;
 
 public class KenoGrabbingMT extends TimerTask{
 	
@@ -126,7 +125,7 @@ public class KenoGrabbingMT extends TimerTask{
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
-			DisableSslVerification.disable();
+			//DisableSslVerification.disable();
 			Calendar cal = Calendar.getInstance();
 			Date today = cal.getTime();
 			cal.add(Calendar.DAY_OF_MONTH, -1);
