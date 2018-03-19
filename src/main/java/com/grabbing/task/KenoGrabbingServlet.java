@@ -228,7 +228,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 		} catch (Exception e) {
 			end = System.currentTimeMillis();
 			logger.error("Exception = {}", e.getMessage());
-			logger.info("Total Grabbing　 time  = {}", (end - start) / 1000 + " secs");
+			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;
 		}
