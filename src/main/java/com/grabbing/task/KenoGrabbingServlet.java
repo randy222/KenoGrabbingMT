@@ -33,17 +33,16 @@ public class KenoGrabbingServlet extends HttpServlet {
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingServlet.class);
 	private static Timer timer = null;
 	private static KenoGrabbingMT task = null;
-	long start;
+	private static long start, end;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public KenoGrabbingServlet() {
 		start = System.currentTimeMillis();
-		logger.info("KenoGrabbingServlet Start = {}", System.currentTimeMillis());
+		logger.info("Servlet Start");
 		Security.addProvider(new BouncyCastleProvider());
-		logger.info("Finish Security.addProvider(new BouncyCastleProvider()) = {}", System.currentTimeMillis());
-		logger.info("TOTAL START TIME = {} ", (System.currentTimeMillis() - start) / 1000);
+		logger.info("Finish JRE bug by adding Provider(BouncyCastleProvider)");
 	}
 
 	/**
@@ -88,17 +87,13 @@ public class KenoGrabbingServlet extends HttpServlet {
 
 	private void writeErrMsg(String msgCode) {
 		try {
-			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt",
-					"UTF-8");
-			// PrintWriter writer = new
-			// PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt",
-			// "UTF-8");
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");
+//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			writer.println("Message_Code: " + msgCode);
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
 			writer.close();
 		} catch (Exception e) {
-			e.printStackTrace();
 			logger.error("Error in writing MT error message. Error message: " + e.getMessage());
 		}
 
@@ -123,11 +118,9 @@ public class KenoGrabbingServlet extends HttpServlet {
 		}
 
 		try {
-			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt",
-					"UTF-8");
-			// PrintWriter writer = new
-			// PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt",
-			// "UTF-8");
+			logger.info("Start writing file");
+			PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");
+//			PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 			writer.println("Message_Code: " + msgCode);
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
@@ -164,6 +157,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 				line = "";
 			}
 			writer.close();
+			logger.info("End writing file");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("Error in drawing MT data. Error message: " + e.getMessage());
@@ -204,10 +198,11 @@ public class KenoGrabbingServlet extends HttpServlet {
 	}
 
 	public Document grap(Map<String, String> cookies) {
+		start = System.currentTimeMillis();
+		logger.info("Start Grabbing MT");
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
-			// DisableSslVerification.disable();
 			Calendar cal = Calendar.getInstance();
 			Date today = cal.getTime();
 			cal.add(Calendar.DAY_OF_MONTH, -1);
@@ -225,20 +220,15 @@ public class KenoGrabbingServlet extends HttpServlet {
 			} else {
 				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
 			}
-			// doc =
-			// Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
-			// .timeout(1000).get();
-			start = System.currentTimeMillis();
-			logger.info("Start Grabbing time = {}", System.currentTimeMillis());
+			logger.info("MT Url = " + url);
 			doc = Jsoup.connect(url).cookies(cookies).timeout(1000).get();
-			long end = System.currentTimeMillis();
-			logger.info("Stop Grabbing time = {}", System.currentTimeMillis());
-			logger.info("TOTAL　 time  = {}", (end - start) / 1000);
+			end = System.currentTimeMillis();
+			logger.info("Finish Grabbing MT");
+			logger.info("Total Grabbing　 time  = {}", (end - start) / 1000 + " secs");
 		} catch (Exception e) {
-			// grap(cookies);
-			e.printStackTrace();
-			logger.info("Exception  = {} Stop time ={}", new Object[] { e.getMessage(), System.currentTimeMillis() });
-			logger.info("TOTAL　 time  = {}", (System.currentTimeMillis() - start) / 1000);
+			end = System.currentTimeMillis();
+			logger.error("Exception = {}", e.getMessage());
+			logger.info("Total Grabbing　 time  = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;
 		}

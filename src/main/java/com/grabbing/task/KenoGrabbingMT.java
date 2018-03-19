@@ -22,8 +22,9 @@ import org.slf4j.LoggerFactory;
 public class KenoGrabbingMT extends TimerTask{
 	
 	private Map<String, String> cookies = new HashMap<String, String>();
-	static int count = 0;
+	private static int count = 0;
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingMT.class);
+	private static long start, end;
 
 	@Override
 	public void run() {
@@ -53,6 +54,7 @@ public class KenoGrabbingMT extends TimerTask{
 			}			
 			
 			try {
+				logger.info("Start writing file");
 				PrintWriter writer = new PrintWriter("/usr/local/applications/kn-grabbing-server/Keno-Grabbing-MT.txt", "UTF-8");	
 //				PrintWriter writer = new PrintWriter("C:\\Users\\pohsun\\Desktop\\Keno-Grabbing-MT.txt", "UTF-8");	
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -90,8 +92,8 @@ public class KenoGrabbingMT extends TimerTask{
 					line = "";
 				}
 				writer.close();
-			} catch (Exception e) {
-				e.printStackTrace();			
+				logger.info("End writing file");
+			} catch (Exception e) {	
 				logger.error("Error in drawing MT data. Error message: " + e.getMessage());		
 			} 
 			count++;	
@@ -122,17 +124,18 @@ public class KenoGrabbingMT extends TimerTask{
 	}
 
 	public Document grap(Map<String, String> cookies) {
+		start = System.currentTimeMillis();
+		logger.info("Start Grabbing MT");
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
-			//DisableSslVerification.disable();
 			Calendar cal = Calendar.getInstance();
 			Date today = cal.getTime();
 			cal.add(Calendar.DAY_OF_MONTH, -1);
-	    	Date yesterday = cal.getTime();
-	    	SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-	    	TimeZone cetTime = TimeZone.getTimeZone("CET");
-	    	cetFormat.setTimeZone(cetTime);
+			Date yesterday = cal.getTime();
+			SimpleDateFormat cetFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+			TimeZone cetTime = TimeZone.getTimeZone("CET");
+			cetFormat.setTimeZone(cetTime);
 			String now = cetFormat.format(today);
 			String before = cetFormat.format(yesterday);
 			String[] nowArray = now.split("-");
@@ -143,13 +146,15 @@ public class KenoGrabbingMT extends TimerTask{
 			} else {
 				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
 			}
-//			doc = Jsoup.connect("https://www.maltco.com/keno/QuickKeno_Today_Results.php").cookies(cookies)
-//					.timeout(1000).get();
-			doc = Jsoup.connect(url).cookies(cookies)
-					.timeout(1000).get();
+			logger.info("MT Url = " + url);
+			doc = Jsoup.connect(url).cookies(cookies).timeout(1000).get();
+			end = System.currentTimeMillis();
+			logger.info("Finish Grabbing MT");
+			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 		} catch (Exception e) {
-			// grap(cookies);
-			e.printStackTrace();
+			end = System.currentTimeMillis();
+			logger.error("Exception = {}", e.getMessage());
+			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;
 		}
@@ -173,8 +178,7 @@ public class KenoGrabbingMT extends TimerTask{
 			writer.println("Message_Code: " + msgCode);
 			writer.println("Last updated time: " + sdf.format(Calendar.getInstance().getTime()));
 			writer.close();	
-		} catch (Exception e) {
-			e.printStackTrace();			
+		} catch (Exception e) {		
 			logger.error("Error in writing MT error message. Error message: " + e.getMessage());		
 		} 
 		
