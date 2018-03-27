@@ -11,12 +11,18 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.TimerTask;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.tsl.TLSSocketConnectionFactory;
 
 
 public class KenoGrabbingMT extends TimerTask{
@@ -26,8 +32,20 @@ public class KenoGrabbingMT extends TimerTask{
 	private static final Logger logger = LoggerFactory.getLogger(KenoGrabbingMT.class);
 	private static long start, end;
 
+	static HostnameVerifier hv = new HostnameVerifier() {
+		public boolean verify(String urlHostName, SSLSession session) {
+			System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+			return true;
+		}
+	};
+	
+	static {
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+		HttpsURLConnection.setDefaultSSLSocketFactory(new TLSSocketConnectionFactory());
+	}
+	
 	@Override
-	public void run() {
+	public void run() {		
 		Document doc = grap(cookies);
 		String cont = doc.toString();
 		int idx = cont.indexOf("recaptcha_response_field");

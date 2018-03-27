@@ -2,7 +2,6 @@ package com.grabbing.task;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.Security;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,18 +11,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.Timer;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLSession;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.tsl.TLSSocketConnectionFactory;
 
 /**
  * Servlet implementation class KenoGrapServlet
@@ -35,14 +39,23 @@ public class KenoGrabbingServlet extends HttpServlet {
 	private static KenoGrabbingMT task = null;
 	private static long start, end;
 
+
+	static HostnameVerifier hv = new HostnameVerifier() {
+		public boolean verify(String urlHostName, SSLSession session) {
+			System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+			return true;
+		}
+	};
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public KenoGrabbingServlet() {
 		start = System.currentTimeMillis();
 		logger.info("Servlet Start");
-		Security.addProvider(new BouncyCastleProvider());
-		logger.info("Finish JRE bug by adding Provider(BouncyCastleProvider)");
+		HttpsURLConnection.setDefaultHostnameVerifier(hv);
+		HttpsURLConnection.setDefaultSSLSocketFactory(new TLSSocketConnectionFactory());
+		logger.info("Finish setDefaultSSLSocketFactory");
 	}
 
 	/**
