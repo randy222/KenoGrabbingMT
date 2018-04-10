@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tsl.TLSSocketConnectionFactory;
+import com.util.IPUtils;
+import com.util.IPInfo;
 
 
 public class KenoGrabbingMT extends TimerTask{
@@ -46,7 +48,9 @@ public class KenoGrabbingMT extends TimerTask{
 	
 	@Override
 	public void run() {		
-		Document doc = grap(cookies);
+		
+		List<IPInfo> ipList = IPUtils.checkIP();		
+		Document doc = grap(cookies, ipList);
 		String cont = doc.toString();
 		int idx = cont.indexOf("recaptcha_response_field");
 
@@ -141,7 +145,7 @@ public class KenoGrabbingMT extends TimerTask{
 		drawResultList.remove(0);	
 	}
 
-	public Document grap(Map<String, String> cookies) {
+	public Document grap(Map<String, String> cookies, List<IPInfo> useIPList) {
 		start = System.currentTimeMillis();
 		logger.info("Start Grabbing MT");
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
@@ -165,7 +169,15 @@ public class KenoGrabbingMT extends TimerTask{
 				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
 			}
 			logger.info("MT Url = " + url);
-			doc = Jsoup.connect(url).cookies(cookies).timeout(1000).get();
+			
+			for (IPInfo info : useIPList) {
+				String host = info.getIp();
+				int port = Integer.parseInt(info.getPort());
+				logger.info(info.toString());
+				doc = tryCrawl(url, host, port, cookies);
+				if (doc != null) break;
+			}
+			
 			end = System.currentTimeMillis();
 			logger.info("Finish Grabbing MT");
 			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
@@ -199,6 +211,16 @@ public class KenoGrabbingMT extends TimerTask{
 		} catch (Exception e) {		
 			logger.error("Error in writing MT error message. Error message: ", e);		
 		} 
+		
+	}
+
+	private Document tryCrawl(String url, String host, int port, Map<String, String> cookies) {
+		try {
+			return Jsoup.connect(url).proxy(host, port).cookies(cookies).timeout(1000).get();
+		} catch (Exception e) {
+			logger.error("tryCrawl Exception: ", e);
+			return null;
+		}
 		
 	}
 

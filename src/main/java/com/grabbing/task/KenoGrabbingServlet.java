@@ -27,6 +27,8 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.util.IPUtils;
+import com.util.IPInfo;
 import com.tsl.TLSSocketConnectionFactory;
 
 /**
@@ -64,10 +66,12 @@ public class KenoGrabbingServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		final Map<String, String> cookies = new HashMap<String, String>();
 		cookies.put("PHPSESSID", request.getParameter("phpid"));
 
-		Document doc = grap(cookies);
+		List<IPInfo> ipList = IPUtils.checkIP();		
+		Document doc = grap(cookies, ipList);
 		if (doc == null) {
 			response.getWriter().append("Start task Failed, please START again").println();
 			return;
@@ -209,9 +213,9 @@ public class KenoGrabbingServlet extends HttpServlet {
 		doGet(request, response);
 	}
 
-	public Document grap(Map<String, String> cookies) {
+	public Document grap(Map<String, String> cookies, List<IPInfo> useIPList) {
 		start = System.currentTimeMillis();
-		logger.info("Start Grabbing MT");
+		logger.info("Start Grabbing MT");		
 		String url = "https://www.maltco.com/keno/QuickKeno_Results_for_Day.php?day=dd&month=MM&year=yyyy";
 		Document doc = null;
 		try {
@@ -233,13 +237,19 @@ public class KenoGrabbingServlet extends HttpServlet {
 				url = url.replace("yyyy", nowArray[0]).replace("MM", nowArray[1]).replace("dd", nowArray[2]);
 			}
 			logger.info("MT Url = " + url);
-			doc = Jsoup.connect(url).cookies(cookies).timeout(1000).get();
+			for (IPInfo info : useIPList) {
+				String host = info.getIp();
+				int port = Integer.parseInt(info.getPort());
+				logger.info(info.toString());
+				doc = tryCrawl(url, host, port, cookies);
+				if (doc != null) break;
+			}
 			end = System.currentTimeMillis();
 			logger.info("Finish Grabbing MT");
-			logger.info("Total Grabbing　 time  = {}", (end - start) / 1000 + " secs");
+			logger.info("Total Grabbing time  = {}", (end - start) / 1000 + " secs");
 		} catch (Exception e) {
 			end = System.currentTimeMillis();
-			logger.error("Exception: ", e);
+			logger.error("grap Exception: ", e);
 			logger.info("Total Grabbing time = {}", (end - start) / 1000 + " secs");
 			writeErrMsg("1");
 			doc = null;
@@ -247,4 +257,16 @@ public class KenoGrabbingServlet extends HttpServlet {
 
 		return doc;
 	}
+
+	private Document tryCrawl(String url, String host, int port, Map<String, String> cookies) {
+		try {
+			return Jsoup.connect(url).proxy(host, port).cookies(cookies).timeout(1000).get();
+		} catch (Exception e) {
+			logger.error("tryCrawl Exception: ", e);
+			return null;
+		}
+		
+	}
+	
+	
 }

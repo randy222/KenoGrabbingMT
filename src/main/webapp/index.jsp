@@ -8,9 +8,6 @@
 <title>Keno Grabbing MT</title>
 </head>
 <body>
-
-	<!-- <a href="<c:url value="/Keno.jsp" />" target="_blank"> Keno Grab</a>
-	</br> -->
 	<a href="https://www.maltco.com/keno/QuickKeno_Today_Results.php"
 		target="_blank">QuickKeno MT</a>
 	</br>
@@ -25,21 +22,12 @@
 			type="submit" value="Show Keno MT">
 	</form>
 	</br>
-	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
-		<input type="hidden" name="type" value="iLotto" >
-		<input type="submit" value="Check iLotto">
-	</form>
-	</br> -->
 	<form method="GET" action="<c:url value="/CheckResult" />"
 		target="_blank">
 		<input type="hidden" name="type" value="keno"> <input
 			type="submit" value="Check Keno">
 	</form>
 	</br>
-	<!-- <form method="GET" action="<c:url value="/CheckResult" />" target="_blank">
-		<input type="hidden" name="type" value="restart" >
-		<input type="submit" value="Show Restart Result">
-	</form> -->
 	<a> 市場列表： </a>
 	<a href="<%=request.getContextPath()%>/market" target="_blank">Market
 		List WebSite</a>
