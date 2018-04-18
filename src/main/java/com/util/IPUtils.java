@@ -47,23 +47,4 @@ public class IPUtils {
 		}
 		return ipList;
 	}
-	
-	public static IPInfo changeIP(List<IPInfo> useIPList, int error) {
-
-		int errorCount = error - 1;
-
-		if (errorCount > useIPList.size() - 1) {
-			errorCount = useIPList.size() - 1;
-		}
-		String ip = useIPList.get(errorCount).getIp();
-		String port = useIPList.get(errorCount).getPort();
-		IPInfo porxyIp = new IPInfo();
-
-		logger.info("ip:" + ip + "|port:" + port);
-
-		porxyIp.setIp(ip);
-		porxyIp.setPort(port);
-
-		return porxyIp;
-	}
 }
