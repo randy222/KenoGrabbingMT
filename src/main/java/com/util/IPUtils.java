@@ -12,12 +12,12 @@ import org.slf4j.LoggerFactory;
 public class IPUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(IPUtils.class);
-	private static String ipUrl = "https://www.proxydocker.com/en/proxylist/country/Canada";
+	private static String ipUrl = "https://www.proxydocker.com/en/proxylist/country/Malta";
 	
 	public static List<IPInfo> checkIP() {
 		List<IPInfo> ipList = new ArrayList<IPInfo>();
 		try {
-			Document doc = Jsoup.connect(ipUrl).timeout(5000).get();
+			Document doc = Jsoup.connect(ipUrl).timeout(5000).post();
 			Elements allIP = doc.select(".proxylist_table > tbody > tr");
 
 			for (int i = 1;i<=allIP.size()-1;i++) {

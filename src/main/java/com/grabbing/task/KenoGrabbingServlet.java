@@ -97,7 +97,7 @@ public class KenoGrabbingServlet extends HttpServlet {
 			timer = new Timer();
 			task = new KenoGrabbingMT();
 			task.setCookies(cookies);
-			timer.schedule(task, 1000 * 60, 1000 * 60);
+			timer.schedule(task, 1000 * 60, 1000 * 60 * 3);
 
 		}
 	}
